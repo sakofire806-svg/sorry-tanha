@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorry Tanha! 🥺</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --bg-grad-1: #fff0f5;
+            --bg-grad-2: #ffe4e1;
+            --primary-color: #ff6b81;
+            --primary-hover: #ff4757;
+            --text-dark: #2f3542;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --shadow-color: rgba(255, 107, 129, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Hind Siliguri', 'Outfit', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 650px;
+            width: 100%;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 40px 30px;
+            box-shadow: 0 15px 35px var(--shadow-color);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            text-align: center;
+            position: relative;
+        }
+
+        /* Floating Animation */
+        .emoji-header {
+            font-size: 70px;
+            margin-bottom: 10px;
+            animation: float 3s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(5deg); }
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-family: 'Outfit', 'Hind Siliguri', sans-serif;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #747d8c;
+            margin-bottom: 25px;
+        }
+
+        /* Letter Card */
+        .letter-box {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+            border-left: 5px solid var(--primary-color);
+            text-align: left;
+            margin-bottom: 30px;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .letter-box p {
+            margin-bottom: 15px;
+        }
+
+        .letter-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* FEATURE 4: Reasons Accordion Section */
+        .reasons-section {
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .reason-item {
+            background: #fff;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            overflow: hidden;
+            border: 1px solid #ffe4e1;
+        }
+
+        .reason-header {
+            padding: 14px 18px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #4b6584;
+            transition: background 0.2s;
+        }
+
+        .reason-header:hover {
+            background: #fff0f5;
+        }
+
+        .reason-content {
+            padding: 0 18px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            color: #57606f;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            background: #fafafa;
+        }
+
+        .reason-item.active .reason-content {
+            padding: 14px 18px;
+            max-height: 120px;
+            border-top: 1px dashed #ffe4e1;
+        }
+
+        .reason-item.active .arrow {
+            transform: rotate(180deg);
+        }
+
+        .arrow {
+            transition: transform 0.3s ease;
+        }
+
+        /* FEATURE 6: Secret Box Button */
+        .secret-box-container {
+            margin-bottom: 30px;
+        }
+
+        .btn-secret {
+            background: #a55eea;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(165, 94, 234, 0.3);
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .btn-secret:hover {
+            background: #8854d0;
+            transform: scale(1.05);
+        }
+
+        /* Action Buttons */
+        .actions-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+            position: relative;
+            min-height: 60px;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            outline: none;
+        }
+
+        .btn-yes {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 8px 20px rgba(255, 107, 129, 0.4);
+        }
+
+        .btn-yes:hover {
+            background: var(--primary-hover);
+            transform: scale(1.08);
+        }
+
+        .btn-no {
+            background: #dfe4ea;
+            color: #57606f;
+            position: absolute;
+            right: 15%;
+        }
+
+        /* Modals & Overlays */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 30px 20px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: popIn 0.3s ease;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-card h3 {
+            color: #a55eea;
+            margin-bottom: 10px;
+        }
+
+        .modal-card p {
+            color: #57606f;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .btn-close {
+            background: #fed330;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #2bcbba;
+        }
+
+        /* Success Overlay */
+        .success-overlay {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 24px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 10;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .success-overlay h2 {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container { padding: 30px 18px; }
+            h1 { font-size: 1.8rem; }
+            .btn-no { right: 5%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Success Screen -->
+        <div class="success-overlay" id="successScreen">
+            <div style="font-size: 80px; margin-bottom: 10px;">🎉💖✨</div>
+            <h2>Yay! Thank You, Tanha!</h2>
+            <p>আমি জানতাম তুই অনেক লক্ষ্মী! আর কখনো তোকে কষ্ট দেব না, প্রমিস! 🤝❤️</p>
+        </div>
+
+        <div class="emoji-header">🥺🌸</div>
+        <h1>Hey Tanha, I'm Really Sorry!</h1>
+        <p class="subtitle">তোর রাগ ভাঙানোর জন্য ছোট্ট একটা চেষ্টা। প্লিজ একটু মন দিয়ে পড়...</p>
+
+        <!-- Heartfelt Letter -->
+        <div class="letter-box">
+            <p><strong>প্রিয় তানহা,</strong></p>
+            <p>আমার ভুলটার জন্য আমি সত্যিই অনেক লজ্জিত এবং আন্তরিকভাবে দুঃখিত। অনাকাঙ্ক্ষিতভাবেই হোক আর যেভাবেই হোক, তোরে কষ্ট দেওয়ার কোনো ইচ্ছে আমার কখনোই ছিল না।</p>
+            <p>আমাদের কানেক্টিভিটি টা আমার কাছে কতটা স্পেশাল, সেটা হয়তো আমি সবসময় প্রকাশ করতে পারি না। কিন্তু তোর সাথে কথা না বলে থাকাটা আমার জন্য সত্যিই কঠিন। প্লিজ, আগের মতো আবার হেসে কথা বল! 🙄 ❤️</p>
+        </div>
+
+        <!-- FEATURE 4: Reasons Why You Are Special (Accordion) -->
+        <div class="reasons-section">
+            <div class="section-title">💡 কেন তোকে মানানো আমার জন্য জরুরি?</div>
+            
+            <div class="reason-item">
+                <div class="reason-header" onclick="toggleReason(this)">
+                    <span>১. তোর বলা গানগুলো মিস করি 🎶</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="reason-content">
+                    তোর নিজের মুখে বলা গানগুলো খুব মিস করছি। ওই মিষ্টি গলায় গান শোনানোটা একদম বন্ধ হয়ে গেছে!
+                </div>
+            </div>
+
+            <div class="reason-item">
+                <div class="reason-header" onclick="toggleReason(this)">
+                    <span>২. 'হ ভাইয়া' ডাকটা মিস করি 🥺</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="reason-content">
+                    তোর ওই মিষ্টি করে 'হ ভাইয়া' বলা ডাকটা খুব মিস করছি। কতদিন হলো শুনি না!
+                </div>
+            </div>
+
+            <div class="reason-item">
+                <div class="reason-header" onclick="toggleReason(this)">
+                    <span>৩. সময়ে-অসময়ে তোর নক দেওয়া 📱</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="reason-content">
+                    কোনো কারণ ছাড়াই হুটহাট নক দিয়ে মাথা খাওয়াটা খুব মিস করছি। ফোনটা এখন একদম শান্ত হয়ে থাকে!
+                </div>
+            </div>
+
+            <div class="reason-item">
+                <div class="reason-header" onclick="toggleReason(this)">
+                    <span>৪. আমাদের কানেক্টিভিটি ✨</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="reason-content">
+                    তোর সাথে যেকোনো হাবিজাবি বিষয় নিয়ে কথা বলা যায়, যা আর কারো সাথে হয় না। এই বন্ডিংটা সত্যি অনেক স্পেশাল!
+                </div>
+            </div>
+        </div>
+
+        <!-- FEATURE 6: Secret Message Box Button -->
+        <div class="secret-box-container">
+            <button class="btn-secret" onclick="openSecret()">🎁 তোর জন্য একটা সিক্রেট মেসেজ!</button>
+        </div>
+
+        <!-- Action Decision Buttons -->
+        <div class="actions-container">
+            <button class="btn btn-yes" onclick="forgiveMe()">মাফ করে দিলাম! ❤️</button>
+            <button class="btn btn-no" id="noBtn" onmouseover="moveButton()" onclick="moveButton()">এখনও রাগ হয়ে আছি! 😤</button>
+        </div>
+    </div>
+
+    <!-- FEATURE 6: Secret Modal Popup -->
+    <div class="modal-overlay" id="secretModal">
+        <div class="modal-card">
+            <div style="font-size: 50px; margin-bottom: 10px;">🤫💌</div>
+            <h3>Secret Message!</h3>
+            <p>"তুই মাফ না করা পর্যন্ত কিন্তু আমি পিছু ছাড়ছি না! আজ রাতে অনলাইন আসলে কিন্তু একটা নক দিবি, ঠিক আছে?"</p>
+            <button class="btn-close" onclick="closeSecret()">ওকে বাবা, ঠিক আছে! 😅</button>
+        </div>
+    </div>
+
+    <script>
+        // Feature 4: Toggle Accordion
+        function toggleReason(element) {
+            const item = element.parentElement;
+            item.classList.toggle('active');
+        }
+
+        // Feature 6: Modal Controls
+        function openSecret() {
+            document.getElementById('secretModal').style.display = 'flex';
+        }
+        function closeSecret() {
+            document.getElementById('secretModal').style.display = 'none';
+        }
+
+        // Move "No" button away
+        function moveButton() {
+            const noBtn = document.getElementById('noBtn');
+            const container = document.querySelector('.container');
+
+            const containerRect = container.getBoundingClientRect();
+            const btnRect = noBtn.getBoundingClientRect();
+
+            const maxX = containerRect.width - btnRect.width - 40;
+            const maxY = containerRect.height - btnRect.height - 40;
+
+            const randomX = Math.floor(Math.random() * maxX) - (containerRect.width / 2) + (btnRect.width / 2);
+            const randomY = Math.floor(Math.random() * maxY) - (containerRect.height / 2) + (btnRect.height / 2);
+
+            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        }
+
+        // Confetti & Success Screen
+        function forgiveMe() {
+            confetti({
+                particleCount: 120,
+                spread: 80,
+                origin: { y: 0.6 }
+            });
+
+            setTimeout(() => {
+                confetti({ particleCount: 80, angle: 60, spread: 55, origin: { x: 0 } });
+                confetti({ particleCount: 80, angle: 120, spread: 55, origin: { x: 1 } });
+            }, 250);
+
+            setTimeout(() => {
+                document.getElementById('successScreen').style.display = 'flex';
+            }, 500);
+        }
+    </script>
+</body>
+</html>
